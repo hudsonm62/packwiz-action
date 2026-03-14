@@ -1,4 +1,4 @@
-name: Test Action
+name: 🧪 Test Action
 on: [push, pull_request]
 jobs:
   test:
