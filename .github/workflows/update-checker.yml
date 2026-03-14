@@ -2,7 +2,7 @@ name: 💥 Update Checker
 on:
   push:
   schedule:
-    - cron: "0 0 * * *" # Runs every day at midnight
+    - cron: "0 0 * * 1"
 
 defaults:
   run:
