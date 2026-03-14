@@ -27,5 +27,5 @@
     "git.enableCommitSigning": true,
     "git.ignoreLimitWarning": true,
 
-    "cSpell.words": ["packwiz"]
+    "cSpell.words": ["Modpack", "packwiz"]
 }

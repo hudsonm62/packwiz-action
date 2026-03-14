@@ -1,5 +1,9 @@
-name: Packwiz
-description: Loads Packwiz for use in GitHub Actions
+name: Packwiz Action
+description: packwiz binaries for use in GitHub Actions
+author: Hudson M.
+branding:
+  color: blue
+  icon: folder
 inputs:
   args:
     description: The arguments to pass to the packwiz command
