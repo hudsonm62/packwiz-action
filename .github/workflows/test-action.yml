@@ -14,11 +14,23 @@ jobs:
         uses: ./
         with:
           args: init --author 'me' --fabric-latest --name 'test modpack' --version 0.1 --mc-version 1.21.1 --modloader fabric
+
       - name: Test Add Mod
         uses: ./
         with:
-          args: modrinth add 'https://modrinth.com/mod/fabric-api'
+          args: modrinth add --project-id P7dR8mSH --version-id 3wZtvzew -y # Fabric API 0.116.8+1.21.1
+
+      - name: Test List Manifests
+        uses: ./
+        with:
+          args: list
+
+      - name: Test Update Manifests
+        uses: ./
+        with:
+          args: update --all -y
+
       - name: Test Export Pack
         uses: ./
         with:
-          args: modrinth export
+          args: modrinth export -y
