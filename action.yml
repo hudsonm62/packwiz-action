@@ -1,0 +1,17 @@
+name: Packwiz
+description: Loads Packwiz for use in GitHub Actions
+inputs:
+  args:
+    description: The arguments to pass to the packwiz command
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Make Executable (Linux/macOS)
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      run: chmod +x $GITHUB_ACTION_PATH/${{ runner.os }}/packwiz
+      shell: bash
+
+    - name: Run packwiz
+      run: $GITHUB_ACTION_PATH/${{ runner.os }}/packwiz ${{ inputs.args }}
+      shell: bash

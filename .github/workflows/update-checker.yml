@@ -1,0 +1,40 @@
+on:
+  push:
+  schedule:
+    - cron: "0 0 * * *" # Runs every day at midnight
+
+defaults:
+  run:
+    shell: pwsh
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-for-updates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚙️ Checkout code
+        uses: actions/checkout@v6
+
+      - name: 🔍 Check for updates
+        id: check-updates
+        run: |
+          $result = ./update-checker.ps1
+          echo "result=$result" >> $env:GITHUB_OUTPUT
+        shell: pwsh
+
+      - name: ✏️ Commit & PR
+        if: steps.check-updates.outputs.result == 'True'
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore: update packwiz"
+          branch: "automation/update-packwiz"
+          branch-suffix: timestamp
+          title: "chore: update packwiz"
+          body: |
+            This PR was created automatically by GitHub Actions.
+
+            See the [update-checker.ps1](./update-checker.ps1) script for more details.
+          delete-branch: true

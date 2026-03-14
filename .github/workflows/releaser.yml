@@ -1,0 +1,51 @@
+name: 📦 Release Action
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        required: true
+        default: "master"
+      version:
+        description: "Version (no `v`)"
+        required: true
+        default: 0.0.0
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚙️ Checkout Repo
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref }}
+      - name: 🤖 Login as GitHub Actions Bot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: 📰 Create Release for v${{ inputs.version }}
+        uses: actions/github-script@v8
+        env:
+          INPUT_REF: ${{ inputs.ref }}
+          INPUT_VERSION: ${{ inputs.version }}
+        with:
+          script: |
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: 'v' + core.getInput('version'),
+              target_commitish: core.getInput('ref'),
+            })
+
+        # https://github.com/actions/toolkit/blob/main/docs/action-versioning.md
+      - name: 📎 Bind Major Version Tag
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          MAJOR_INPUT_VERSION="${INPUT_VERSION%%.*}"
+          MAJOR_VERSION_TAG="v${MAJOR_INPUT_VERSION}"
+          git tag -fa "${MAJOR_VERSION_TAG}" -m "Bump ${MAJOR_VERSION_TAG}"
+          git push origin "${MAJOR_VERSION_TAG}" --force
