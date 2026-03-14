@@ -2,10 +2,6 @@ name: Test Action
 on: [push, pull_request]
 jobs:
   test:
-    concurrency:
-      group: test-action
-      cancel-in-progress: false
-
     strategy:
       fail-fast: false
       matrix:
