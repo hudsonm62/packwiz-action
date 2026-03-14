@@ -9,9 +9,9 @@ runs:
   steps:
     - name: Make Executable (Linux/macOS)
       if: runner.os == 'Linux' || runner.os == 'macOS'
-      run: chmod +x $GITHUB_ACTION_PATH/${{ runner.os }}/packwiz
+      run: chmod +x $GITHUB_ACTION_PATH/bin/${{ runner.os }}/packwiz
       shell: bash
 
     - name: Run packwiz
-      run: $GITHUB_ACTION_PATH/${{ runner.os }}/packwiz ${{ inputs.args }}
+      run: $GITHUB_ACTION_PATH/bin/${{ runner.os }}/packwiz ${{ inputs.args }}
       shell: bash
